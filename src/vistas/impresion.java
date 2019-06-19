@@ -1,9 +1,16 @@
 package vistas;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import org.com.logica.controlador;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -11,6 +18,31 @@ import org.com.logica.controlador;
  */
 public class impresion extends javax.swing.JInternalFrame {
 
+    
+    int p=1;
+    String [][]graficas = {{"Negocio 1", "Lunes"},{"Negocio 1", "Martes"},
+            {"Negocio 1", "Miércoles"},{"Negocio 1", "Jueves"},{"Negocio 1", "Viernes"},{"Negocio 1", "Sábado"},{"Negocio 1", "Domingo"}};
+    JFreeChart Grafica;
+    DefaultCategoryDataset Datos = new DefaultCategoryDataset(); 
+
+    private void cargar_grafico_motores() {
+    
+        Datos.addValue(1, "Negocio 1", "Lunes");
+
+        Grafica = ChartFactory.createLineChart(null,
+                "Días", "Visitas", Datos,
+                PlotOrientation.HORIZONTAL, true, true, false);
+
+        ChartPanel Panel = chart();//new ChartPanel(Grafica);
+
+        this.panel_motores.setLayout(new BorderLayout());
+        this.panel_motores.setSize(new Dimension(300, 300));
+        panel_motores.add(Panel, BorderLayout.NORTH);
+        this.pack();
+        this.repaint();
+    }
+    
+    
     private enum estados {INICIO,IMPRESION,REANUDAR,DETENER,CANCELAR};
     
     private void Estado(estados estado){
@@ -49,6 +81,9 @@ public class impresion extends javax.swing.JInternalFrame {
                 break;
         }
     }
+    
+    
+    
     public impresion() {
 //        if(!controlador.listo){
 //            JOptionPane.showMessageDialog(this, "No se han cargado las configuraciones iiciales","ERROR",0);
@@ -57,11 +92,14 @@ public class impresion extends javax.swing.JInternalFrame {
 //        }
     
         initComponents();
-        lbl_vel.setText(sld_velocidad.getValue()+ "Seg");
+        lbl_vel.setText(sld_velocidad.getValue() + "Seg");
         Estado(estados.INICIO);
-        this.getContentPane().setBackground(new Color(53,19,48));
+        this.getContentPane().setBackground(new Color(53, 19, 48));
         barra_cemento.setOrientation(SwingConstants.VERTICAL);
         //this.repaint();
+
+      
+        cargar_grafico_motores();
     }
 
     @SuppressWarnings("unchecked")
@@ -85,8 +123,8 @@ public class impresion extends javax.swing.JInternalFrame {
         jPanel4 = new javax.swing.JPanel();
         barra_cemento = new javax.swing.JProgressBar();
         Porcentaje = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
+        panel_motores = new javax.swing.JPanel();
+        panel_extrusor = new javax.swing.JPanel();
         btn_salir = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(204, 42, 65));
@@ -135,6 +173,8 @@ public class impresion extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Velocidad entre instruccion:");
 
         lbl_vel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -258,32 +298,32 @@ public class impresion extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel5.setBackground(new java.awt.Color(204, 95, 61));
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "MOTORES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panel_motores.setBackground(new java.awt.Color(204, 95, 61));
+        panel_motores.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "MOTORES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panel_motoresLayout = new javax.swing.GroupLayout(panel_motores);
+        panel_motores.setLayout(panel_motoresLayout);
+        panel_motoresLayout.setHorizontalGroup(
+            panel_motoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panel_motoresLayout.setVerticalGroup(
+            panel_motoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel6.setBackground(new java.awt.Color(100, 144, 138));
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "EXTRUSOR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panel_extrusor.setBackground(new java.awt.Color(100, 144, 138));
+        panel_extrusor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "EXTRUSOR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        javax.swing.GroupLayout panel_extrusorLayout = new javax.swing.GroupLayout(panel_extrusor);
+        panel_extrusor.setLayout(panel_extrusorLayout);
+        panel_extrusorLayout.setHorizontalGroup(
+            panel_extrusorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 325, Short.MAX_VALUE)
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 227, Short.MAX_VALUE)
+        panel_extrusorLayout.setVerticalGroup(
+            panel_extrusorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 199, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -294,11 +334,11 @@ public class impresion extends javax.swing.JInternalFrame {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panel_extrusor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panel_motores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -310,8 +350,8 @@ public class impresion extends javax.swing.JInternalFrame {
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panel_extrusor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panel_motores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -388,7 +428,17 @@ public class impresion extends javax.swing.JInternalFrame {
 
     private void btn_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salirActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        //this.dispose();
+        try {
+            //this.jPanel1.removeAll();
+            Datos.addValue(p + 1, graficas[p][0], graficas[p][1]);
+            p++;
+            Grafica.fireChartChanged();
+            this.repaint();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println(panel_extrusor.getPreferredSize().getHeight()+", "+panel_extrusor.getPreferredSize().getWidth());
     }//GEN-LAST:event_btn_salirActionPerformed
 
     private void prg_barStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_prg_barStateChanged
@@ -396,6 +446,21 @@ public class impresion extends javax.swing.JInternalFrame {
         lbl_progreso.setText(""+prg_bar.getValue()+" %");
     }//GEN-LAST:event_prg_barStateChanged
 
+    ChartPanel chart() {
+        //... custom code here
+       /* JFreeChart chart = ChartFactory.createLineChart("Visitas diarias",
+        "Días", "Visitas", Datos,
+            PlotOrientation.HORIZONTAL, true, true, false);
+*/
+    // Now: this is the trick to manage setting the size of a chart into a panel!:
+        return new ChartPanel(Grafica) {
+            public Dimension getPreferredSize() {//239.0, 353.0
+                return new Dimension(340, 230);
+            }
+        };
+    } 
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Porcentaje;
@@ -411,11 +476,11 @@ public class impresion extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JLabel lbl_progreso;
     private javax.swing.JLabel lbl_vel;
+    private javax.swing.JPanel panel_extrusor;
+    private javax.swing.JPanel panel_motores;
     private javax.swing.JProgressBar prg_bar;
     private javax.swing.JSlider sld_velocidad;
     // End of variables declaration//GEN-END:variables
