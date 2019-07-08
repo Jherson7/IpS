@@ -1,19 +1,6 @@
 package org.com.Serial;
 
 
-/*public class test {
-
-	public static void  main(String[] args) {
-	Enumeration<CommPortIdentifier> ports 
-	= CommPortIdentifier.getPortIdentifiers();
-	while(ports.hasMoreElements()){
-		CommPortIdentifier info = ports.nextElement();
-		System.out.println("hi this answer  "+info.getName());
-	}
-
-	}
-
-}*/
 //import gnu.io.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,20 +9,13 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import java.io.IOException;
+import java.awt.HeadlessException;
 import java.io.PrintStream;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import org.com.logica.controlador;
 
-public class last extends javax.swing.JFrame implements SerialPortEventListener {
+public class puerto extends javax.swing.JFrame implements SerialPortEventListener {
 
     SerialPort serialPort;
-    
-    private static final String PORT_NAMES[] = {
-        "COM3", "COM6", "COM8", "COM9", "COM11", controlador.puerto// Windows
-    };
-
+    CommPortIdentifier portId = null;
     /**
      * A BufferedReader which will be fed by a InputStreamReader converting the
      * bytes into characters making the displayed results codepage independent
@@ -52,23 +32,19 @@ public class last extends javax.swing.JFrame implements SerialPortEventListener 
     /**
      * Default bits per second for COM port.
      */
-    private static final int DATA_RATE = 9600;
+    private static int DATA_RATE = 9600;
 
-    public void initialize() {
     
-        CommPortIdentifier portId = null;
-        Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
-
-        //First, Find an instance of serial port as set in PORT_NAMES.
-        while (portEnum.hasMoreElements()) {
-            CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
-            for (String portName : PORT_NAMES) {
-                if (currPortId.getName().equals(portName)) {
-                    portId = currPortId;
-                    break;
-                }
-            }
-        }
+    public puerto(CommPortIdentifier puerto, int velocidad) throws HeadlessException {
+        this.portId = puerto;
+        DATA_RATE = velocidad;
+        
+        initialize();
+    }
+    
+    
+    public void initialize() {
+           
         if (portId == null) {
             System.out.println("Could not find COM port.");
             return;
@@ -148,35 +124,5 @@ public class last extends javax.swing.JFrame implements SerialPortEventListener 
             }*/
     }
 
-    public void escribir_en_serial(int men) {
-        try {
-            output.write(men);
 
-        } catch (IOException ex) {
-            System.out.println("Erro al escribir el mensaje: " + men + ", " + ex.getMessage());
-        }
-    }
-
-    
-    
-    /*public static void main(String[] args) throws Exception {
-		last main = new last();
-		main.initialize();
-		Thread t = new Thread() {
-                public void run() {
-                    //the following line will keep this app alive for 1000 seconds,
-                    //waiting for events to occur and responding to them
-                    //(printing incoming messages to console).
-                    try {
-                        
-                            Thread.sleep(10000000);
-                        
-                    } catch (InterruptedException ie) {
-                        System.out.println(ie.getMessage());
-                    }
-                }
-            };
-		t.start();
-		System.out.println("Started");
-	}*/
 }

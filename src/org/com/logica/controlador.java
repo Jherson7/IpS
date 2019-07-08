@@ -1,8 +1,17 @@
 package org.com.logica;
 
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
 import java.io.File;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JProgressBar;
 import org.com.Serial.last;
+import org.com.Serial.puerto;
+import org.com.Serial.puertos;
+import vistas.impresion;
 
 /**
  *
@@ -21,14 +30,33 @@ public class controlador {
     public  static int      velocidad_entre_comando=1;
     private static boolean  proceso_impresion = false;
     private static Thread   hilo_impresion        ;
+    private static impresion vistaImpresora;
     
+    private static Thread   hilo_motores        ;
+    static int p=0;
     
+    private static puerto escritura;
+    private static puerto lectura;
+    private static CommPortIdentifier puerto_entrada;
+    private static CommPortIdentifier puerto_salida;
     
-    public static void preparar_impresora(){
-        coordenadas = contenido_archivo.split("\n");
-        impresora = new last();
-        impresora.initialize();
-        puntero=0;
+    public static boolean preparar_impresora() {
+
+        try {
+            coordenadas = contenido_archivo.split("\n");
+
+            impresora = new last();
+            impresora.initialize();
+
+            escritura = new puerto(puerto_salida, velocidad);
+            lectura = new puerto(puerto_entrada, velocidad);
+
+            puntero = 0;
+            
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
     
     public static void iniciar_impresion(JProgressBar barra) {
@@ -55,10 +83,11 @@ public class controlador {
         };
         
         hilo_impresion.start();
+        
+        
+        
     }
     
-    
-   
     public static void detener_impresion(){
         try {
             if(hilo_impresion.isAlive()){
@@ -69,7 +98,6 @@ public class controlador {
             System.out.println("error al detener impresion"); 
        }
     }
-    
     
     public static void reanudar_impresion(){
         try {
@@ -82,14 +110,13 @@ public class controlador {
     private static void imprimir_figura(int linea,String comando){
        
         System.out.println("Linea: "+linea+", "+comando);
+        escritura.escribir_en_serial(comando);
           /*  comando = verificar_comando(comando);
             if (!comando.equals("error") && !comando.equals("")) {
                  System.out.println(comando);
                 // impresora.escribir_en_serial(comando);
             }*/
-            
-        
-    }
+   }
 
     public static void cancelar_impresion() {
         try {
@@ -115,4 +142,78 @@ public class controlador {
         barra.repaint();
     }
 
+    public static void setImpresora(impresion imp) {
+        vistaImpresora = imp;
+        iniciarHiloMotores();
+    }
+    
+    public static void graficarMotores(int val, String nombre, int valor){
+        vistaImpresora.repintarGraficaMotores(val, nombre, valor);
+    }
+
+    private static void iniciarHiloMotores() {
+         hilo_motores = new Thread() {
+            public void run() {
+                try {
+                    while (true) {
+                        Thread.sleep(1000);
+                        int val  = (int)Math.floor(Math.random()*100) + 3;
+                        //graficarMotores(p++, "Motor x",String.valueOf(val));
+                        graficarMotores(val, "Motor x",p++);
+                        val  = (int)Math.floor(Math.random()*100) + 3;
+                        graficarMotores(val, "Motor y",p);
+                        val  = (int)Math.floor(Math.random()*100) + 3;
+                        graficarMotores(val, "Motor z",p);
+                            
+                    }
+                } catch (InterruptedException ie) {
+                    System.out.println(ie.getMessage());
+                }
+            }
+        };
+        
+        hilo_motores.start();
+    }
+
+    public static LinkedList< puertos>  obtenerPuertosDisponibles(){
+  
+        LinkedList< puertos> puertos = new LinkedList<>();
+
+        CommPortIdentifier portId = null;
+
+        Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
+
+        while (portEnum.hasMoreElements()) {
+
+            CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
+
+            puertos.add(new puertos(currPortId.getName(), portId));
+
+        }
+        return puertos;
+    }
+    
+    public static void setPuertoLectura( CommPortIdentifier  lectura_puerto){
+        puerto_entrada = lectura_puerto;
+    }
+    
+    public static void setPuertoEscritura(CommPortIdentifier escritura_puerto){
+        puerto_salida = escritura_puerto;
+    }
+    
+    public static DefaultComboBoxModel<puertos> getModeloPuertos(){
+        
+        DefaultComboBoxModel<puertos> modelo = new DefaultComboBoxModel<>();
+        
+        LinkedList< puertos> lista = obtenerPuertosDisponibles();
+        
+        if(!lista.isEmpty()){
+            for(puertos p : lista){
+                modelo.addElement(p);
+            }
+        }
+       
+        return modelo;
+    }
+    
 }

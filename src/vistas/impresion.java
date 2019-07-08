@@ -23,15 +23,18 @@ public class impresion extends javax.swing.JInternalFrame {
     String [][]graficas = {{"Negocio 1", "Lunes"},{"Negocio 1", "Martes"},
             {"Negocio 1", "Miércoles"},{"Negocio 1", "Jueves"},{"Negocio 1", "Viernes"},{"Negocio 1", "Sábado"},{"Negocio 1", "Domingo"}};
     JFreeChart Grafica;
+    
     DefaultCategoryDataset Datos = new DefaultCategoryDataset(); 
 
+    
     private void cargar_grafico_motores() {
     
-        Datos.addValue(1, "Negocio 1", "Lunes");
+        
+       // Datos.addValue(1, "Negocio 1", "Lunes");
 
         Grafica = ChartFactory.createLineChart(null,
-                "Días", "Visitas", Datos,
-                PlotOrientation.HORIZONTAL, true, true, false);
+                "Tiempo", "Temperatura", Datos,
+                PlotOrientation.VERTICAL, true, true, false);
 
         ChartPanel Panel = chart();//new ChartPanel(Grafica);
 
@@ -97,9 +100,10 @@ public class impresion extends javax.swing.JInternalFrame {
         this.getContentPane().setBackground(new Color(53, 19, 48));
         barra_cemento.setOrientation(SwingConstants.VERTICAL);
         //this.repaint();
-
-      
+     
         cargar_grafico_motores();
+        
+        controlador.preparar_impresora();
     }
 
     @SuppressWarnings("unchecked")
@@ -186,20 +190,22 @@ public class impresion extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_pausar, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_reanudar, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(lbl_vel))
-                        .addComponent(sld_velocidad, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_iniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_pausar, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_reanudar, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lbl_vel)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_iniciar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(sld_velocidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -230,7 +236,7 @@ public class impresion extends javax.swing.JInternalFrame {
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
 
         jPanel3.setBackground(new java.awt.Color(100, 144, 138));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PROGRESO DE IMPRESION", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PROGRESO DE IMPRESION", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(255, 255, 255))); // NOI18N
 
         prg_bar.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -242,9 +248,9 @@ public class impresion extends javax.swing.JInternalFrame {
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lbl_progreso.setBackground(new java.awt.Color(100, 144, 138));
-        lbl_progreso.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        lbl_progreso.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
         lbl_progreso.setText("00%");
-        jPanel8.add(lbl_progreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 140, -1));
+        jPanel8.add(lbl_progreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 140, -1));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -272,28 +278,28 @@ public class impresion extends javax.swing.JInternalFrame {
         jPanel4.setBackground(new java.awt.Color(204, 95, 61));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CANTIDAD DE CEMENTO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        Porcentaje.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        Porcentaje.setText("jLabel5");
+        Porcentaje.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        Porcentaje.setText("00%");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(33, 33, 33)
                 .addComponent(Porcentaje)
-                .addGap(30, 30, 30)
+                .addGap(18, 18, 18)
                 .addComponent(barra_cemento, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(barra_cemento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(barra_cemento, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(66, 66, 66)
                 .addComponent(Porcentaje)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -313,13 +319,13 @@ public class impresion extends javax.swing.JInternalFrame {
         );
 
         panel_extrusor.setBackground(new java.awt.Color(100, 144, 138));
-        panel_extrusor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "EXTRUSOR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(255, 255, 255))); // NOI18N
+        panel_extrusor.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "EXTRUSOR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(255, 255, 255))); // NOI18N
 
         javax.swing.GroupLayout panel_extrusorLayout = new javax.swing.GroupLayout(panel_extrusor);
         panel_extrusor.setLayout(panel_extrusorLayout);
         panel_extrusorLayout.setHorizontalGroup(
             panel_extrusorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 325, Short.MAX_VALUE)
+            .addGap(0, 345, Short.MAX_VALUE)
         );
         panel_extrusorLayout.setVerticalGroup(
             panel_extrusorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,11 +376,12 @@ public class impresion extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)))
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -392,9 +399,9 @@ public class impresion extends javax.swing.JInternalFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
+                        .addGap(36, 36, 36)
                         .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 85, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -434,6 +441,7 @@ public class impresion extends javax.swing.JInternalFrame {
             Datos.addValue(p + 1, graficas[p][0], graficas[p][1]);
             p++;
             Grafica.fireChartChanged();
+            
             this.repaint();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -460,6 +468,13 @@ public class impresion extends javax.swing.JInternalFrame {
         };
     } 
 
+    
+    
+    public  void repintarGraficaMotores(int val,String nombre, int valor){
+        Datos.addValue(val, nombre,""+ valor);
+        Grafica.fireChartChanged();
+        this.repaint();
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

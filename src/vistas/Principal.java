@@ -173,8 +173,12 @@ public class Principal extends javax.swing.JFrame {
 
     private void menu_controllerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_controllerActionPerformed
         // TODO add your handling code here:
-        if(controlador.listo)
-            mostrarVentanasInternas(new impresion(), "CONTROLADOR DE IMPRESORA");
+        if(controlador.listo){
+            impresion imp = new impresion();
+            mostrarVentanasInternas(imp, "CONTROLADOR DE IMPRESORA");
+            controlador.setImpresora(imp) ;
+        }
+           
         else
             JOptionPane.showMessageDialog(this, "Aun no se han cargado las configuraciones iniciales!","ERROR",0);
        
