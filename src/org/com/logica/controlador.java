@@ -32,7 +32,7 @@ public class controlador {
     private static impresion vistaImpresora;
     
     private static Thread   hilo_motores        ;
-    static int p=0;
+    public static int p=0;
     static int i =0;
     
     private static puerto escritura;
@@ -40,6 +40,9 @@ public class controlador {
     
     private static CommPortIdentifier puerto_entrada;
     private static CommPortIdentifier puerto_salida;
+    
+    
+    private static JProgressBar barra_cemento;
     
     public static boolean preparar_impresora() {
 
@@ -117,6 +120,10 @@ public class controlador {
        escritura.escribir_en_serial(comando);
        
    }
+    
+    public static void imprimir_comando(String comando){
+           escritura.escribir_en_serial(comando);
+    }
 
     public static void cancelar_impresion() {
         try {
@@ -133,6 +140,14 @@ public class controlador {
         barra.setValue(valor);
         barra.repaint();
     }
+    
+    
+    public static void pintar_barra_cemento(int val) {
+        barra_cemento.setValue(val);
+        barra_cemento.repaint();
+    }
+    
+    
 
     public static void setImpresora(impresion imp) {
         vistaImpresora = imp;

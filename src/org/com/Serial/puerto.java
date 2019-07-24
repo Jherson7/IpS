@@ -105,6 +105,7 @@ public class puerto extends javax.swing.JFrame implements SerialPortEventListene
     }
 
     private void leer_del_puerto(String codigo) {
+        
         if ("listo".equals(codigo)) {
            // escribir_en_serial(comando);//para que abra la puerta
         }

@@ -3,6 +3,8 @@ package vistas;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.KeyEvent;
+import javafx.scene.input.KeyCode;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import org.com.logica.controlador;
@@ -147,9 +149,9 @@ public class impresion extends javax.swing.JInternalFrame {
         y_mas = new javax.swing.JButton();
         x_menos = new javax.swing.JButton();
         x_mas = new javax.swing.JButton();
-        y_menos = new javax.swing.JButton();
         z_mas = new javax.swing.JButton();
         z_menos = new javax.swing.JButton();
+        y_menos = new javax.swing.JButton();
         txt_comando = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
 
@@ -345,7 +347,7 @@ public class impresion extends javax.swing.JInternalFrame {
         );
         panel_motoresLayout.setVerticalGroup(
             panel_motoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 301, Short.MAX_VALUE)
         );
 
         panel_extrusor.setBackground(new java.awt.Color(100, 144, 138));
@@ -359,7 +361,7 @@ public class impresion extends javax.swing.JInternalFrame {
         );
         panel_extrusorLayout.setVerticalGroup(
             panel_extrusorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 199, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -385,67 +387,120 @@ public class impresion extends javax.swing.JInternalFrame {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panel_extrusor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panel_motores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panel_motores, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panel_extrusor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         tab_pane.addTab("tab1", jPanel2);
 
-        y_mas.setText("jButton1");
+        panel_calibracion.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Calibrador", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
 
-        x_menos.setText("jButton1");
+        y_mas.setBackground(new java.awt.Color(51, 255, 51));
+        y_mas.setFont(new java.awt.Font("Segoe Print", 0, 24)); // NOI18N
+        y_mas.setText("X +");
+        y_mas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                y_masActionPerformed(evt);
+            }
+        });
 
-        x_mas.setText("jButton1");
+        x_menos.setBackground(new java.awt.Color(204, 51, 0));
+        x_menos.setFont(new java.awt.Font("Segoe Print", 0, 24)); // NOI18N
+        x_menos.setText("Y -");
+        x_menos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                x_menosActionPerformed(evt);
+            }
+        });
 
-        y_menos.setText("jButton1");
+        x_mas.setBackground(new java.awt.Color(51, 255, 51));
+        x_mas.setFont(new java.awt.Font("Segoe Print", 0, 24)); // NOI18N
+        x_mas.setText("Y +");
+        x_mas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                x_masActionPerformed(evt);
+            }
+        });
 
-        z_mas.setText("jButton1");
+        z_mas.setBackground(new java.awt.Color(51, 255, 51));
+        z_mas.setFont(new java.awt.Font("Segoe Print", 0, 24)); // NOI18N
+        z_mas.setText("Z +");
+        z_mas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                z_masActionPerformed(evt);
+            }
+        });
 
-        z_menos.setText("jButton1");
+        z_menos.setBackground(new java.awt.Color(204, 51, 0));
+        z_menos.setFont(new java.awt.Font("Segoe Print", 0, 24)); // NOI18N
+        z_menos.setText("Z -");
+        z_menos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                z_menosActionPerformed(evt);
+            }
+        });
+
+        y_menos.setBackground(new java.awt.Color(204, 51, 0));
+        y_menos.setFont(new java.awt.Font("Segoe Print", 0, 24)); // NOI18N
+        y_menos.setText("X -");
+        y_menos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                y_menosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panel_calibracionLayout = new javax.swing.GroupLayout(panel_calibracion);
         panel_calibracion.setLayout(panel_calibracionLayout);
         panel_calibracionLayout.setHorizontalGroup(
             panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_calibracionLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(x_menos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_calibracionLayout.createSequentialGroup()
                 .addGroup(panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_calibracionLayout.createSequentialGroup()
-                        .addComponent(y_menos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(x_mas))
-                    .addComponent(y_mas))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                        .addGap(91, 91, 91)
+                        .addGroup(panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(y_menos)
+                            .addComponent(y_mas))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panel_calibracionLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(x_menos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(7, 7, 7)
+                .addComponent(x_mas)
+                .addGap(47, 47, 47)
                 .addGroup(panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(z_mas, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(z_mas)
                     .addComponent(z_menos, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(24, 24, 24))
+                .addContainerGap())
         );
         panel_calibracionLayout.setVerticalGroup(
             panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_calibracionLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(y_menos, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_calibracionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panel_calibracionLayout.createSequentialGroup()
+                        .addComponent(y_mas, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(x_menos, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(x_mas, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(y_menos, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panel_calibracionLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(z_mas, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(z_menos, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
-            .addGroup(panel_calibracionLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(z_mas, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(z_menos, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 31, Short.MAX_VALUE))
-            .addGroup(panel_calibracionLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(y_mas, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addGroup(panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(x_menos, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(x_mas, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        txt_comando.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txt_comandoKeyReleased(evt);
+            }
+        });
 
         jLabel2.setText("Comando:");
 
@@ -454,27 +509,25 @@ public class impresion extends javax.swing.JInternalFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panel_calibracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(panel_calibracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_comando, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(432, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(txt_comando, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(513, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_comando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_comando, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(59, 59, 59)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
                 .addComponent(panel_calibracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap(173, Short.MAX_VALUE))
         );
 
         tab_pane.addTab("tab2", jPanel5);
@@ -492,10 +545,9 @@ public class impresion extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tab_pane))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 183, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(114, 114, 114))
         );
@@ -509,9 +561,10 @@ public class impresion extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
-                        .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(tab_pane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(tab_pane))
+                .addContainerGap())
         );
 
         tab_pane.getAccessibleContext().setAccessibleName("Monitoreo");
@@ -552,6 +605,45 @@ public class impresion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         lbl_progreso.setText(""+prg_bar.getValue()+" %");
     }//GEN-LAST:event_prg_barStateChanged
+
+    private void txt_comandoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_comandoKeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==evt.VK_ENTER){
+            String comando = txt_comando.getText();
+            if(!comando.isEmpty())
+                controlador.imprimir_comando(comando);
+        }
+    }//GEN-LAST:event_txt_comandoKeyReleased
+
+    private void y_masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_y_masActionPerformed
+        // TODO add your handling code here:
+        controlador.imprimir_comando("G91 X");
+    }//GEN-LAST:event_y_masActionPerformed
+
+    private void y_menosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_y_menosActionPerformed
+        // TODO add your handling code here:
+        controlador.imprimir_comando("G91 X");
+    }//GEN-LAST:event_y_menosActionPerformed
+
+    private void x_menosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_x_menosActionPerformed
+        // TODO add your handling code here:
+        controlador.imprimir_comando("G91 X");
+    }//GEN-LAST:event_x_menosActionPerformed
+
+    private void x_masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_x_masActionPerformed
+        // TODO add your handling code here:
+        controlador.imprimir_comando("G91 X");
+    }//GEN-LAST:event_x_masActionPerformed
+
+    private void z_masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_z_masActionPerformed
+        // TODO add your handling code here:
+        controlador.imprimir_comando("G91 X");
+    }//GEN-LAST:event_z_masActionPerformed
+
+    private void z_menosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_z_menosActionPerformed
+        // TODO add your handling code here:
+        controlador.imprimir_comando("G91 X");
+    }//GEN-LAST:event_z_menosActionPerformed
 
     ChartPanel chart() {
         //... custom code here
