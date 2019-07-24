@@ -20,11 +20,15 @@ public class Archivo extends javax.swing.JInternalFrame {
     
     public Archivo() {
         initComponents();
-        txt_puerto.setText("COM11");
+       // txt_puerto.setText("COM11");
         txt_velocidad.setText("9600");
         
         this.cmb_salida.setModel(controlador.getModeloPuertos());
         this.cmb_entrada.setModel(controlador.getModeloPuertos());
+        
+        if(this.cmb_entrada.getSelectedIndex()==-1)
+            JOptionPane.showMessageDialog(this, "No se han detectado puertos disponibles, "
+                    + "conecte impresora y vuelva a intentar","ERROR",0);
     }
 
   
@@ -37,9 +41,7 @@ public class Archivo extends javax.swing.JInternalFrame {
         btn_cargar_archivo = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         txt_velocidad = new javax.swing.JTextField();
-        txt_puerto = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         cmb_salida = new javax.swing.JComboBox();
@@ -71,7 +73,7 @@ public class Archivo extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
+                .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_cargar_archivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_seleccionar_archivo, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
@@ -92,17 +94,12 @@ public class Archivo extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel1.setText("Velocidad:");
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel2.setText("Salida:");
-
         txt_velocidad.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txt_velocidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txt_velocidadKeyReleased(evt);
             }
         });
-
-        txt_puerto.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel4.setText("Salida:");
@@ -121,34 +118,27 @@ public class Archivo extends javax.swing.JInternalFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmb_entrada, 0, 94, Short.MAX_VALUE)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txt_velocidad)
-                        .addComponent(txt_puerto, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                        .addComponent(cmb_salida, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(cmb_entrada, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_velocidad, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                    .addComponent(cmb_salida, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(25, 25, 25)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txt_velocidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txt_puerto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(cmb_salida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(cmb_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -186,15 +176,14 @@ public class Archivo extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(91, 91, 91)
+                        .addGap(48, 48, 48)
                         .addComponent(btn_guardar, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(100, 100, 100))
+                        .addGap(49, 49, 49)
+                        .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(72, 72, 72)
+                        .addComponent(jLabel3)))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,15 +216,19 @@ public class Archivo extends javax.swing.JInternalFrame {
 
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
         // TODO add your handling code here:
-        if(guardar_velocidad()){
-            if(guardar_puerto()){
-                if(archivo_cargado){
-                    JOptionPane.showMessageDialog(this, "Se cargaron correctamente los parametros para la impresion","EXITO",1);
-                    controlador.listo= true;
-                    //controlador.preparar_impresora();
-                    this.dispose();
+        if (archivo_cargado) {
+            if (guardar_velocidad()) {
+                if (guardar_puerto()) {
+                    if (archivo_cargado) {
+                        JOptionPane.showMessageDialog(this, "Se cargaron correctamente los parametros para la impresion", "EXITO", 1);
+                        controlador.listo = true;
+                        //controlador.preparar_impresora();
+                        this.dispose();
+                    }
                 }
             }
+        }else{
+             JOptionPane.showMessageDialog(this, "Aun no se ha cargado el archivo gcode", "ERROR", 0);
         }
     }//GEN-LAST:event_btn_guardarActionPerformed
 
@@ -262,13 +255,11 @@ public class Archivo extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox cmb_entrada;
     private javax.swing.JComboBox cmb_salida;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTextField txt_puerto;
     private javax.swing.JTextField txt_velocidad;
     // End of variables declaration//GEN-END:variables
 
@@ -318,7 +309,7 @@ public class Archivo extends javax.swing.JInternalFrame {
             controlador.velocidad = Integer.parseInt(txt_velocidad.getText());
             return true;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error en el parametro de volocidad","Error",0);
+            JOptionPane.showMessageDialog(this, "Error en el parametro de velocidad","Error",0);
             return false;
         }
     }
@@ -328,10 +319,10 @@ public class Archivo extends javax.swing.JInternalFrame {
         puertos entrada =(puertos)cmb_entrada.getSelectedItem();
         puertos salida = (puertos)cmb_salida.getSelectedItem();        
         
-        if(entrada.equals(salida)){
+      /*  if(entrada.getNombre() .equals(salida.getNombre())){
              JOptionPane.showMessageDialog(this, "Debe seleccionar puerto distinto de S/E","ERROR",0);
              return false;
-        }
+        }*/
         
         controlador.setPuertoEscritura(salida.getPuerto());
         controlador.setPuertoLectura(entrada.getPuerto());

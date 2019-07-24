@@ -20,19 +20,13 @@ public class impresion extends javax.swing.JInternalFrame {
 
     
     int p=1;
-    String [][]graficas = {{"Negocio 1", "Lunes"},{"Negocio 1", "Martes"},
-            {"Negocio 1", "Miércoles"},{"Negocio 1", "Jueves"},{"Negocio 1", "Viernes"},{"Negocio 1", "Sábado"},{"Negocio 1", "Domingo"}};
     JFreeChart Grafica;
-    
     DefaultCategoryDataset Datos = new DefaultCategoryDataset(); 
-
+    estados estado_actual;
     
     private void cargar_grafico_motores() {
     
-        
-       // Datos.addValue(1, "Negocio 1", "Lunes");
-
-        Grafica = ChartFactory.createLineChart(null,
+       Grafica = ChartFactory.createLineChart(null,
                 "Tiempo", "Temperatura", Datos,
                 PlotOrientation.VERTICAL, true, true, false);
 
@@ -44,11 +38,33 @@ public class impresion extends javax.swing.JInternalFrame {
         this.pack();
         this.repaint();
     }
+
+    private void verificar_salida() {
+        switch(estado_actual){
+            case INICIO:
+            case IMPRESION:
+            case REANUDAR:
+            case DETENER:
+                int val = JOptionPane.showConfirmDialog(this, "Desea salir? aun se encuentra en impresion", "Impresion en curso", 0, 1);
+                if(val==0){
+                    controlador.finalizar_impresion();
+                    this.dispose();
+                }
+                break;
+            
+            //break;
+            case CANCELAR:
+                controlador.finalizar_impresion();
+                this.dispose();
+                break;
+        }
+    }
     
     
     private enum estados {INICIO,IMPRESION,REANUDAR,DETENER,CANCELAR};
     
     private void Estado(estados estado){
+        estado_actual=estado;
         switch(estado){
             case INICIO:
                 
@@ -77,7 +93,7 @@ public class impresion extends javax.swing.JInternalFrame {
                 btn_pausar.setEnabled(false);
                 break;
             case CANCELAR:
-                btn_iniciar.setEnabled(true);
+                btn_iniciar.setEnabled(false);
                 btn_cancelar.setEnabled(false);
                 btn_reanudar.setEnabled(false);
                 btn_pausar.setEnabled(false);
@@ -85,21 +101,16 @@ public class impresion extends javax.swing.JInternalFrame {
         }
     }
     
-    
+   
     
     public impresion() {
-//        if(!controlador.listo){
-//            JOptionPane.showMessageDialog(this, "No se han cargado las configuraciones iiciales","ERROR",0);
-//            this.dispose();
-//            return;
-//        }
-    
+   
         initComponents();
-        lbl_vel.setText(sld_velocidad.getValue() + "Seg");
+        lbl_vel.setText(sld_velocidad.getValue() + "ms");
         Estado(estados.INICIO);
         this.getContentPane().setBackground(new Color(53, 19, 48));
         barra_cemento.setOrientation(SwingConstants.VERTICAL);
-        //this.repaint();
+      
      
         cargar_grafico_motores();
         
@@ -119,6 +130,8 @@ public class impresion extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         lbl_vel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        btn_salir = new javax.swing.JButton();
+        tab_pane = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         prg_bar = new javax.swing.JProgressBar();
@@ -129,7 +142,16 @@ public class impresion extends javax.swing.JInternalFrame {
         Porcentaje = new javax.swing.JLabel();
         panel_motores = new javax.swing.JPanel();
         panel_extrusor = new javax.swing.JPanel();
-        btn_salir = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        panel_calibracion = new javax.swing.JPanel();
+        y_mas = new javax.swing.JButton();
+        x_menos = new javax.swing.JButton();
+        x_mas = new javax.swing.JButton();
+        y_menos = new javax.swing.JButton();
+        z_mas = new javax.swing.JButton();
+        z_menos = new javax.swing.JButton();
+        txt_comando = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(204, 42, 65));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Controlador"));
@@ -230,6 +252,14 @@ public class impresion extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(232, 202, 164));
         jLabel1.setText("CONTROL Y MONITOREO DE LA IMPRESORA");
+
+        btn_salir.setFont(new java.awt.Font("Trebuchet MS", 1, 11)); // NOI18N
+        btn_salir.setText("SALIR");
+        btn_salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_salirActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(66, 66, 84));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("MONITOREO"));
@@ -361,13 +391,93 @@ public class impresion extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btn_salir.setFont(new java.awt.Font("Trebuchet MS", 1, 11)); // NOI18N
-        btn_salir.setText("SALIR");
-        btn_salir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_salirActionPerformed(evt);
-            }
-        });
+        tab_pane.addTab("tab1", jPanel2);
+
+        y_mas.setText("jButton1");
+
+        x_menos.setText("jButton1");
+
+        x_mas.setText("jButton1");
+
+        y_menos.setText("jButton1");
+
+        z_mas.setText("jButton1");
+
+        z_menos.setText("jButton1");
+
+        javax.swing.GroupLayout panel_calibracionLayout = new javax.swing.GroupLayout(panel_calibracion);
+        panel_calibracion.setLayout(panel_calibracionLayout);
+        panel_calibracionLayout.setHorizontalGroup(
+            panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_calibracionLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(x_menos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_calibracionLayout.createSequentialGroup()
+                        .addComponent(y_menos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(x_mas))
+                    .addComponent(y_mas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGroup(panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(z_mas, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(z_menos, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(24, 24, 24))
+        );
+        panel_calibracionLayout.setVerticalGroup(
+            panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panel_calibracionLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(y_menos, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(panel_calibracionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(z_mas, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(z_menos, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 31, Short.MAX_VALUE))
+            .addGroup(panel_calibracionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(y_mas, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addGroup(panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(x_menos, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(x_mas, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabel2.setText("Comando:");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(panel_calibracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txt_comando, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(432, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_comando, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(59, 59, 59)
+                .addComponent(panel_calibracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(230, Short.MAX_VALUE))
+        );
+
+        tab_pane.addTab("tab2", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -382,28 +492,29 @@ public class impresion extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)))
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tab_pane))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 183, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(103, 103, 103))
+                .addGap(114, 114, 114))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
-                        .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 85, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(btn_salir, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tab_pane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        tab_pane.getAccessibleContext().setAccessibleName("Monitoreo");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -414,7 +525,7 @@ public class impresion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_iniciarActionPerformed
 
     private void sld_velocidadStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sld_velocidadStateChanged
-        lbl_vel.setText(sld_velocidad.getValue()+"  seg");
+        lbl_vel.setText(sld_velocidad.getValue()+"  ms");
         controlador.velocidad_entre_comando=(int)sld_velocidad.getValue();
     }//GEN-LAST:event_sld_velocidadStateChanged
 
@@ -434,19 +545,7 @@ public class impresion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     private void btn_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salirActionPerformed
-        // TODO add your handling code here:
-        //this.dispose();
-        try {
-            //this.jPanel1.removeAll();
-            Datos.addValue(p + 1, graficas[p][0], graficas[p][1]);
-            p++;
-            Grafica.fireChartChanged();
-            
-            this.repaint();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        System.out.println(panel_extrusor.getPreferredSize().getHeight()+", "+panel_extrusor.getPreferredSize().getWidth());
+        verificar_salida();
     }//GEN-LAST:event_btn_salirActionPerformed
 
     private void prg_barStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_prg_barStateChanged
@@ -460,7 +559,7 @@ public class impresion extends javax.swing.JInternalFrame {
         "Días", "Visitas", Datos,
             PlotOrientation.HORIZONTAL, true, true, false);
 */
-    // Now: this is the trick to manage setting the size of a chart into a panel!:
+
         return new ChartPanel(Grafica) {
             public Dimension getPreferredSize() {//239.0, 353.0
                 return new Dimension(340, 230);
@@ -476,6 +575,10 @@ public class impresion extends javax.swing.JInternalFrame {
         this.repaint();
     }
     
+    public void eliminarDatos(){
+        Datos.clear();
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Porcentaje;
@@ -486,17 +589,28 @@ public class impresion extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_reanudar;
     private javax.swing.JButton btn_salir;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JLabel lbl_progreso;
     private javax.swing.JLabel lbl_vel;
+    private javax.swing.JPanel panel_calibracion;
     private javax.swing.JPanel panel_extrusor;
     private javax.swing.JPanel panel_motores;
     private javax.swing.JProgressBar prg_bar;
     private javax.swing.JSlider sld_velocidad;
+    private javax.swing.JTabbedPane tab_pane;
+    private javax.swing.JTextField txt_comando;
+    private javax.swing.JButton x_mas;
+    private javax.swing.JButton x_menos;
+    private javax.swing.JButton y_mas;
+    private javax.swing.JButton y_menos;
+    private javax.swing.JButton z_mas;
+    private javax.swing.JButton z_menos;
     // End of variables declaration//GEN-END:variables
 }

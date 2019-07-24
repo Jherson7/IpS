@@ -6,8 +6,8 @@ import java.io.File;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JProgressBar;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.com.Serial.last;
 import org.com.Serial.puerto;
 import org.com.Serial.puertos;
@@ -26,7 +26,6 @@ public class controlador {
     public  static boolean  listo=false;
     private static String[] coordenadas;
     private static int      puntero =0;
-    private static last     impresora;
     public  static int      velocidad_entre_comando=1;
     private static boolean  proceso_impresion = false;
     private static Thread   hilo_impresion        ;
@@ -34,9 +33,11 @@ public class controlador {
     
     private static Thread   hilo_motores        ;
     static int p=0;
+    static int i =0;
     
     private static puerto escritura;
     private static puerto lectura;
+    
     private static CommPortIdentifier puerto_entrada;
     private static CommPortIdentifier puerto_salida;
     
@@ -45,16 +46,19 @@ public class controlador {
         try {
             coordenadas = contenido_archivo.split("\n");
 
-            impresora = new last();
-            impresora.initialize();
+            limpiar_comandos();
+            
+             // impresora = new last();
+             // impresora.initialize();
 
             escritura = new puerto(puerto_salida, velocidad);
-            lectura = new puerto(puerto_entrada, velocidad);
+            //lectura = new puerto(puerto_entrada, velocidad);
 
             puntero = 0;
             
             return true;
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -67,6 +71,7 @@ public class controlador {
             public void run() {
                 try {
                     while (proceso_impresion) {
+                        
                         Thread.sleep(velocidad_entre_comando*50);
                         
                         pintar_barra(barra);
@@ -83,9 +88,7 @@ public class controlador {
         };
         
         hilo_impresion.start();
-        
-        
-        
+   
     }
     
     public static void detener_impresion(){
@@ -109,13 +112,10 @@ public class controlador {
     
     private static void imprimir_figura(int linea,String comando){
        
-        System.out.println("Linea: "+linea+", "+comando);
-        escritura.escribir_en_serial(comando);
-          /*  comando = verificar_comando(comando);
-            if (!comando.equals("error") && !comando.equals("")) {
-                 System.out.println(comando);
-                // impresora.escribir_en_serial(comando);
-            }*/
+       
+       System.out.println("Linea: {"+linea+"}, comando:{"+comando+"}");
+       escritura.escribir_en_serial(comando);
+       
    }
 
     public static void cancelar_impresion() {
@@ -123,14 +123,6 @@ public class controlador {
             hilo_impresion.stop();
         } catch (Exception e) {
             System.out.println("Error al cancelar la impresion");
-        }
-    }
-
-    private static String verificar_comando(String comando) {
-        try{
-            return comando.substring(0,comando.indexOf("("));
-        }catch(Exception e){
-             return "error";
         }
     }
 
@@ -152,6 +144,9 @@ public class controlador {
     }
 
     private static void iniciarHiloMotores() {
+        
+        
+        
          hilo_motores = new Thread() {
             public void run() {
                 try {
@@ -164,6 +159,12 @@ public class controlador {
                         graficarMotores(val, "Motor y",p);
                         val  = (int)Math.floor(Math.random()*100) + 3;
                         graficarMotores(val, "Motor z",p);
+                        
+                        i++;
+                        if(i==15){
+                            vistaImpresora.eliminarDatos();
+                            i=0;
+                        }
                             
                     }
                 } catch (InterruptedException ie) {
@@ -187,7 +188,7 @@ public class controlador {
 
             CommPortIdentifier currPortId = (CommPortIdentifier) portEnum.nextElement();
 
-            puertos.add(new puertos(currPortId.getName(), portId));
+            puertos.add(new puertos(currPortId.getName(), currPortId));
 
         }
         return puertos;
@@ -215,5 +216,40 @@ public class controlador {
        
         return modelo;
     }
+
+    private static void limpiar_comandos() {
+        String coordenadas2[] = new String[coordenadas.length];
+        int p=0;
+        for(String a : coordenadas){
+            if(!(a.startsWith("(")||a.isEmpty())){
+                coordenadas2[p++]=a;
+            }
+        }
+        
+        String coordenadas3[]=new String[p];
+        for(int i=0; i< p ; i++)
+            coordenadas3[i]=coordenadas2[i];
+        
+        coordenadas=coordenadas3;
+    }
     
+    public static void finalizar_impresion(){
+        try {
+            archivo=null;
+            contenido_archivo="";
+            hilo_impresion.stop();
+            listo=false;
+            proceso_impresion=false;
+            
+            escritura.close();
+            //lectura.close();
+
+        } catch (Exception e) {
+            System.out.println("Error al finalizar impresion! "+e.getLocalizedMessage());
+        }
+    }
+
+    public static void jsonMonitoreo(String json){
+        
+    }
 }

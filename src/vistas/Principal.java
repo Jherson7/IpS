@@ -31,6 +31,19 @@ public class Principal extends javax.swing.JFrame {
         jDesktopPane1.add(frame);
         frame.moveToFront();
     }
+     
+     public void mostrarVentanasInternasSinBotones(JInternalFrame frame,String nombre){
+        frame.setVisible(true);
+        frame.setTitle(nombre);
+        frame.setIconifiable(false);
+        frame.setClosable(false);
+        frame.setResizable(true);
+        frame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+        frame.pack();
+
+        jDesktopPane1.add(frame);
+        frame.moveToFront();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -175,7 +188,7 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(controlador.listo){
             impresion imp = new impresion();
-            mostrarVentanasInternas(imp, "CONTROLADOR DE IMPRESORA");
+            mostrarVentanasInternasSinBotones(imp, "CONTROLADOR DE IMPRESORA");
             controlador.setImpresora(imp) ;
         }
            

@@ -33,7 +33,7 @@ public class last extends javax.swing.JFrame implements SerialPortEventListener 
     SerialPort serialPort;
     
     private static final String PORT_NAMES[] = {
-        "COM3", "COM6", "COM8", "COM9", "COM11", controlador.puerto// Windows
+        "COM3", "COM6", "COM8", "COM9", "COM11","COM13"// Windows
     };
 
     /**
