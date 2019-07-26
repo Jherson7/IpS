@@ -9,6 +9,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.com.Serial.puertos;
 import org.com.logica.controlador;
+import org.com.visor.VisualizerWindow;
 
 /**
  *
@@ -279,6 +280,11 @@ public class Archivo extends javax.swing.JInternalFrame {
         int res = jf.showOpenDialog(this);
         
         if(res==JFileChooser.APPROVE_OPTION){
+            
+            VisualizerWindow vw = new VisualizerWindow();
+            //if (this.fileTextField.getText().length() > 1) {
+            vw.setGcodeFile(jf.getSelectedFile().toString());
+            //}
             controlador.archivo = jf.getSelectedFile();
         }
     }
