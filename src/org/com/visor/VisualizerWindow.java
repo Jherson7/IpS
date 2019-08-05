@@ -31,6 +31,7 @@ import com.willwinder.universalgcodesender.types.GcodeCommand;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.vecmath.Point3d;
 
@@ -67,6 +68,7 @@ public class VisualizerWindow extends javax.swing.JFrame implements ControllerLi
         // Create the top-level container
         final JFrame frame = this; // Swing's JFrame or AWT's Frame
         frame.getContentPane().add(canvas);
+            
         
         // Manage pausing and resuming the animator when it doesn't need to run.
         frame.addWindowListener(new WindowAdapter() {

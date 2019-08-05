@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
-import javafx.scene.input.KeyCode;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import org.com.logica.controlador;
@@ -57,11 +56,9 @@ public class impresion extends javax.swing.JInternalFrame {
             //break;
             case CANCELAR:
                 controlador.finalizar_impresion();
-                this.dispose();
                 break;
         }
     }
-    
     
     private enum estados {INICIO,IMPRESION,REANUDAR,DETENER,CANCELAR};
     
@@ -103,8 +100,6 @@ public class impresion extends javax.swing.JInternalFrame {
         }
     }
     
-   
-    
     public impresion() {
    
         initComponents();
@@ -116,7 +111,7 @@ public class impresion extends javax.swing.JInternalFrame {
      
         cargar_grafico_motores();
         
-        controlador.preparar_impresora();
+        controlador.preparar_impresora(this.barra_cemento);
     }
 
     @SuppressWarnings("unchecked")
@@ -141,7 +136,7 @@ public class impresion extends javax.swing.JInternalFrame {
         lbl_progreso = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         barra_cemento = new javax.swing.JProgressBar();
-        Porcentaje = new javax.swing.JLabel();
+        lbl_porcentaje = new javax.swing.JLabel();
         panel_motores = new javax.swing.JPanel();
         panel_extrusor = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -310,8 +305,14 @@ public class impresion extends javax.swing.JInternalFrame {
         jPanel4.setBackground(new java.awt.Color(204, 95, 61));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "CANTIDAD DE CEMENTO", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 11), new java.awt.Color(255, 255, 255))); // NOI18N
 
-        Porcentaje.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
-        Porcentaje.setText("00%");
+        barra_cemento.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                barra_cementoStateChanged(evt);
+            }
+        });
+
+        lbl_porcentaje.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
+        lbl_porcentaje.setText("00%");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -319,7 +320,7 @@ public class impresion extends javax.swing.JInternalFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addComponent(Porcentaje)
+                .addComponent(lbl_porcentaje)
                 .addGap(18, 18, 18)
                 .addComponent(barra_cemento, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -332,7 +333,7 @@ public class impresion extends javax.swing.JInternalFrame {
                 .addContainerGap())
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(66, 66, 66)
-                .addComponent(Porcentaje)
+                .addComponent(lbl_porcentaje)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -461,12 +462,10 @@ public class impresion extends javax.swing.JInternalFrame {
                         .addGap(91, 91, 91)
                         .addGroup(panel_calibracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(y_menos)
-                            .addComponent(y_mas))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(y_mas)))
                     .addGroup(panel_calibracionLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(x_menos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(x_menos)))
                 .addGap(7, 7, 7)
                 .addComponent(x_mas)
                 .addGap(47, 47, 47)
@@ -525,9 +524,9 @@ public class impresion extends javax.swing.JInternalFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_comando, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
                 .addComponent(panel_calibracion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(179, Short.MAX_VALUE))
         );
 
         tab_pane.addTab("tab2", jPanel5);
@@ -598,6 +597,7 @@ public class impresion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     private void btn_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_salirActionPerformed
+        
         verificar_salida();
     }//GEN-LAST:event_btn_salirActionPerformed
 
@@ -608,7 +608,7 @@ public class impresion extends javax.swing.JInternalFrame {
 
     private void txt_comandoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_comandoKeyReleased
         // TODO add your handling code here:
-        if(evt.getKeyCode()==evt.VK_ENTER){
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             String comando = txt_comando.getText();
             if(!comando.isEmpty())
                 controlador.imprimir_comando(comando);
@@ -617,33 +617,38 @@ public class impresion extends javax.swing.JInternalFrame {
 
     private void y_masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_y_masActionPerformed
         // TODO add your handling code here:
-        controlador.imprimir_comando("G91 X");
+        controlador.imprimir_comando("G91 G0  X1");
     }//GEN-LAST:event_y_masActionPerformed
 
     private void y_menosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_y_menosActionPerformed
         // TODO add your handling code here:
-        controlador.imprimir_comando("G91 X");
+        controlador.imprimir_comando("G91 G0  X-1");
     }//GEN-LAST:event_y_menosActionPerformed
 
     private void x_menosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_x_menosActionPerformed
         // TODO add your handling code here:
-        controlador.imprimir_comando("G91 X");
+        controlador.imprimir_comando("G91 G0  Y-1");
     }//GEN-LAST:event_x_menosActionPerformed
 
     private void x_masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_x_masActionPerformed
         // TODO add your handling code here:
-        controlador.imprimir_comando("G91 X");
+        controlador.imprimir_comando("G91 G0  Y1");
     }//GEN-LAST:event_x_masActionPerformed
 
     private void z_masActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_z_masActionPerformed
         // TODO add your handling code here:
-        controlador.imprimir_comando("G91 X");
+        controlador.imprimir_comando("G91 G0  Z1");
     }//GEN-LAST:event_z_masActionPerformed
 
     private void z_menosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_z_menosActionPerformed
         // TODO add your handling code here:
-        controlador.imprimir_comando("G91 X");
+        controlador.imprimir_comando("G91 G0  Z-1");
     }//GEN-LAST:event_z_menosActionPerformed
+
+    private void barra_cementoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_barra_cementoStateChanged
+        // TODO add your handling code here:
+        lbl_porcentaje.setText(barra_cemento.getValue()+"%");
+    }//GEN-LAST:event_barra_cementoStateChanged
 
     ChartPanel chart() {
         //... custom code here
@@ -659,7 +664,17 @@ public class impresion extends javax.swing.JInternalFrame {
         };
     } 
 
+    public void terminar_con_error(){
+        JOptionPane.showMessageDialog(this, "Error al imprimir, revise estado de impresion en seccion de impresiones","ERROR",0);
+        this.dispose();
+        
+    }
     
+    public void terminar_con_exito(){
+        JOptionPane.showMessageDialog(this, "Impresion terminada con Exito","FINALIZADO",1);
+        this.dispose();
+        
+    }
     
     public  void repintarGraficaMotores(int val,String nombre, int valor){
         Datos.addValue(val, nombre,""+ valor);
@@ -673,7 +688,6 @@ public class impresion extends javax.swing.JInternalFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel Porcentaje;
     private javax.swing.JProgressBar barra_cemento;
     private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_iniciar;
@@ -689,6 +703,7 @@ public class impresion extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JLabel lbl_porcentaje;
     private javax.swing.JLabel lbl_progreso;
     private javax.swing.JLabel lbl_vel;
     private javax.swing.JPanel panel_calibracion;

@@ -17,9 +17,10 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setExtendedState(MAXIMIZED_BOTH);
+        controlador.Principal=this;
     }
 
-     public void mostrarVentanasInternas(JInternalFrame frame,String nombre){
+    public void mostrarVentanasInternas(JInternalFrame frame,String nombre){
         frame.setVisible(true);
         frame.setTitle(nombre);
         frame.setIconifiable(true);
@@ -32,7 +33,7 @@ public class Principal extends javax.swing.JFrame {
         frame.moveToFront();
     }
      
-     public void mostrarVentanasInternasSinBotones(JInternalFrame frame,String nombre){
+    public void mostrarVentanasInternasSinBotones(JInternalFrame frame,String nombre){
         frame.setVisible(true);
         frame.setTitle(nombre);
         frame.setIconifiable(false);
@@ -44,6 +45,11 @@ public class Principal extends javax.swing.JFrame {
         jDesktopPane1.add(frame);
         frame.moveToFront();
     }
+    
+    public void mostrarVentanaReimpresion(){
+        mostrarVentanasInternas(new Archivo_reimpresion(), "Reimpresion");
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -149,6 +155,11 @@ public class Principal extends javax.swing.JFrame {
         menu_impresiones.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 14)); // NOI18N
         menu_impresiones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/com/pictures/reportar.png"))); // NOI18N
         menu_impresiones.setText("IMPRESIONES");
+        menu_impresiones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_impresionesActionPerformed(evt);
+            }
+        });
         menu_administrador.add(menu_impresiones);
 
         jMenuBar1.add(menu_administrador);
@@ -186,15 +197,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void menu_controllerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_controllerActionPerformed
         // TODO add your handling code here:
-        if(controlador.listo){
-            impresion imp = new impresion();
-            mostrarVentanasInternasSinBotones(imp, "CONTROLADOR DE IMPRESORA");
-            controlador.setImpresora(imp) ;
-        }
-           
-        else
-            JOptionPane.showMessageDialog(this, "Aun no se han cargado las configuraciones iniciales!","ERROR",0);
-       
+        mostrar_controlador_imp();
     }//GEN-LAST:event_menu_controllerActionPerformed
 
     private void menu_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_userActionPerformed
@@ -214,7 +217,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void menu_confActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_confActionPerformed
         // TODO add your handling code here:
-         mostrarVentanasInternas(new Archivo(), "Aperturar Turno");
+         mostrarVentanasInternas(new Archivo(), "Seleccionar Archivo GCODE");
     }//GEN-LAST:event_menu_confActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
@@ -223,6 +226,11 @@ public class Principal extends javax.swing.JFrame {
         lg.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void menu_impresionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_impresionesActionPerformed
+        // TODO add your handling code here:
+        mostrarVentanasInternas(new impresiones_realizadas(), "IMPRESIONES");
+    }//GEN-LAST:event_menu_impresionesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -275,4 +283,16 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menu_user;
     private javax.swing.JMenu menu_usuario;
     // End of variables declaration//GEN-END:variables
+
+    public void mostrar_controlador_imp() {
+        if(controlador.listo){
+            impresion imp = new impresion();
+            controlador.setImpresora(imp) ;
+            mostrarVentanasInternasSinBotones(imp, "CONTROLADOR DE IMPRESORA");
+        }
+           
+        else
+            JOptionPane.showMessageDialog(this, "Aun no se han cargado las configuraciones iniciales!","ERROR",0);
+       
+    }
 }

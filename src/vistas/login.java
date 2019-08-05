@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
+import org.com.logica.controlador;
 
 
 /**
@@ -147,6 +148,7 @@ public class login extends javax.swing.JFrame {
             if (usu != null) {
                 Principal pr = new Principal();
                 pr.setVisible(true);
+                controlador.set_usuario(usu);
                 this.dispose();
             }else{
                  JOptionPane.showMessageDialog(null, "Usuario o contrasenia erroneos", "LOGIN", 0);

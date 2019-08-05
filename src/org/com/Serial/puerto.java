@@ -11,11 +11,15 @@ import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import java.awt.HeadlessException;
 import java.io.PrintStream;
+import org.com.logica.controlador;
 
 public class puerto extends javax.swing.JFrame implements SerialPortEventListener {
 
     SerialPort serialPort;
     CommPortIdentifier portId = null;
+    Boolean flag =false;
+    Boolean leyendo = false;
+    String  comando="";
     /**
      * A BufferedReader which will be fed by a InputStreamReader converting the
      * bytes into characters making the displayed results codepage independent
@@ -39,6 +43,13 @@ public class puerto extends javax.swing.JFrame implements SerialPortEventListene
         this.portId = puerto;
         DATA_RATE = velocidad;
         
+        initialize();
+    }
+    
+       public puerto(CommPortIdentifier puerto, int velocidad, boolean flag) throws HeadlessException {
+        this.portId = puerto;
+        DATA_RATE = velocidad;
+        this.flag=flag;
         initialize();
     }
     
@@ -93,10 +104,12 @@ public class puerto extends javax.swing.JFrame implements SerialPortEventListene
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
             try {
                 codigo = input.readLine();
+                
+                System.out.println("Recibido: " + codigo);
                 leer_del_puerto(codigo);
                 //String res = getRandomHexa();
 
-                System.out.println("Recibido: " + codigo);
+               
             } catch (Exception e) {
                 System.err.println("Hay error recibiendo: " + codigo + "," + e.toString());
             }
@@ -105,12 +118,23 @@ public class puerto extends javax.swing.JFrame implements SerialPortEventListene
     }
 
     private void leer_del_puerto(String codigo) {
-        
-        if ("listo".equals(codigo)) {
-           // escribir_en_serial(comando);//para que abra la puerta
+       //if(flag){
+       if(codigo.equals("{")){
+           leyendo=true;
+           comando="{";
+        } else if (leyendo) {
+            if (codigo.equals("}")) {
+                comando += "}";
+                try {
+                    controlador.json_monitoreo(comando);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                leyendo = false;
+            }else
+                comando+=codigo;
         }
-
-    }
+     }
 
     public void escribir_en_serial(String men) {
         //try {

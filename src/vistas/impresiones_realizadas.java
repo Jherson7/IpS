@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package vistas;
 
 import org.com.controler.impresion_controller;
+import org.com.logica.controlador;
+import org.com.models.impresion_modelo_tabla;
 
 /**
  *
- * @author Usuario
+ * @author Jherson
  */
 public class impresiones_realizadas extends javax.swing.JInternalFrame {
 
@@ -33,6 +30,7 @@ public class impresiones_realizadas extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla_impresiones = new javax.swing.JTable();
         btn_relanzar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         tabla_impresiones.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -54,6 +52,9 @@ public class impresiones_realizadas extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI Historic", 1, 24)); // NOI18N
+        jLabel1.setText("HISTORIAL DE IMPRESIONES");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -64,15 +65,21 @@ public class impresiones_realizadas extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_relanzar, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(202, 202, 202))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(68, 68, 68)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_relanzar, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -81,11 +88,20 @@ public class impresiones_realizadas extends javax.swing.JInternalFrame {
     private void btn_relanzarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_relanzarActionPerformed
         // TODO add your handling code here:
         
+        if(tabla_impresiones.getSelectedRow()>=0){
+            
+            impresion_modelo_tabla modelo = (impresion_modelo_tabla)tabla_impresiones.getModel();
+            org.com.bens.impresion imp    = modelo.elementAt(tabla_impresiones.getSelectedRow());
+            
+            controlador.cargar_contenido_archivo(imp.getNombre_archivo(), imp.getContenido());
+            controlador.reimprimir();            
+        }
     }//GEN-LAST:event_btn_relanzarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_relanzar;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabla_impresiones;
     // End of variables declaration//GEN-END:variables

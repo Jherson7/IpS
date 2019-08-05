@@ -49,10 +49,10 @@ public class impresion_modelo_tabla extends AbstractTableModel{
                 resultado = imp.getFecha();
                 break;
             case 3:
-                resultado = imp.getUsuario();
+                resultado = imp.getNombre_usuario();
                 break;
             case 4:
-                resultado = imp.getEstado();
+                resultado = (imp.getEstado().equals("1"))?"Completada":"Fallida";
                 break;
         }
 
