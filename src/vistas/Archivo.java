@@ -322,29 +322,20 @@ public class Archivo extends javax.swing.JInternalFrame {
     }
 
     private boolean guardar_puerto() {
-        
-        puertos entrada =(puertos)cmb_entrada.getSelectedItem();
-        puertos salida = (puertos)cmb_salida.getSelectedItem();        
-        
-      /*  if(entrada.getNombre() .equals(salida.getNombre())){
+
+        /*puertos entrada = (puertos) cmb_entrada.getSelectedItem();//Es el puerto que recibe la informacion de 
+        //la impresora para el monitor
+        puertos salida = (puertos) cmb_salida.getSelectedItem();
+
+        if(entrada.getNombre() .equals(salida.getNombre())){
              JOptionPane.showMessageDialog(this, "Debe seleccionar puerto distinto de S/E","ERROR",0);
              return false;
-        }*/
+        }
         
         controlador.setPuertoEscritura(salida.getPuerto());
         controlador.setPuertoLectura(entrada.getPuerto());
-        
+        */
         return true;
-        
-        /*if (txt_puerto.getText().isEmpty()) {
-            if (txt_puerto.getText().contains("COM")) {
-                controlador.puerto = txt_puerto.getText();
-                return true;
-            }
-            return false;
-        } else {
 
-            return true;
-        }*/
     }
 }

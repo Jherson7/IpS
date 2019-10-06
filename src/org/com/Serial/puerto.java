@@ -11,6 +11,7 @@ import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 import java.awt.HeadlessException;
 import java.io.PrintStream;
+import javax.swing.JOptionPane;
 import org.com.logica.controlador;
 
 public class puerto extends javax.swing.JFrame implements SerialPortEventListener {
@@ -20,6 +21,7 @@ public class puerto extends javax.swing.JFrame implements SerialPortEventListene
     Boolean flag =false;
     Boolean leyendo = false;
     String  comando="";
+    int no_errores=0;
     /**
      * A BufferedReader which will be fed by a InputStreamReader converting the
      * bytes into characters making the displayed results codepage independent
@@ -108,33 +110,44 @@ public class puerto extends javax.swing.JFrame implements SerialPortEventListene
                 System.out.println("Recibido: " + codigo);
                 leer_del_puerto(codigo);
                 //String res = getRandomHexa();
-
-               
             } catch (Exception e) {
                 System.err.println("Hay error recibiendo: " + codigo + "," + e.toString());
+                no_errores++;
+                if(no_errores>=100){
+                    JOptionPane.showMessageDialog(null, "Se ha perdido la comunicacion con uno de los puertos, finalice la impresion","ERROR",0);
+                    this.close();
+                }
             }
             // Ignore all the other eventTypes, but you should consider the other ones.
         }
     }
 
     private void leer_del_puerto(String codigo) {
-       //if(flag){
-       if(codigo.equals("{")){
-           leyendo=true;
-           comando="{";
-        } else if (leyendo) {
-            if (codigo.equals("}")) {
-                comando += "}";
-                try {
-                    controlador.json_monitoreo(comando);
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
+       if(flag){
+            if (codigo.equals("{")) {
+                leyendo = true;
+                comando = "{";
+            } else if (leyendo) {
+                if (codigo.equals("}")) {
+                    comando += "}";
+                    try {
+                        controlador.json_monitoreo(comando);
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                    leyendo = false;
+                } else {
+                    comando += codigo;
                 }
-                leyendo = false;
-            }else
-                comando+=codigo;
+            }
         }
-     }
+       else{//si no es flag este puerto es de escritura
+           //por lo que debe recibir un ok despues que se le envia un comando
+           //en caso contrario se perdio la comunicacion.
+           //if(codigo.contains("ok"))
+           
+       }
+    }
 
     public void escribir_en_serial(String men) {
         //try {

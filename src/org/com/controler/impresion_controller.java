@@ -5,6 +5,7 @@
  */
 package org.com.controler;
 
+import java.util.Date;
 import org.com.models.impresion_modelo_tabla;
 
 /**
@@ -19,4 +20,10 @@ public class impresion_controller {
         tabla = new impresion_modelo_tabla();
         return tabla;
     }
+    
+    public static impresion_modelo_tabla getTabla(Date inicio, Date fin){
+        tabla = new impresion_modelo_tabla(inicio,fin);
+        return tabla;
+    }
+    
 }

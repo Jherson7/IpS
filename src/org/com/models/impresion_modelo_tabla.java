@@ -1,5 +1,6 @@
 package org.com.models;
 
+import java.util.Date;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import org.com.bens.impresion;
@@ -17,6 +18,11 @@ public class impresion_modelo_tabla extends AbstractTableModel{
     public impresion_modelo_tabla() {
         impresion =new impresion_db();
         lista=impresion.retornarLista();
+    }
+    
+    public impresion_modelo_tabla(Date inicio , Date fin) {
+        impresion =new impresion_db();
+        lista=impresion.retornarListaConFecha(inicio, fin);
     }
     
     public impresion elementAt(int indice){
@@ -49,7 +55,7 @@ public class impresion_modelo_tabla extends AbstractTableModel{
                 resultado = imp.getFecha();
                 break;
             case 3:
-                resultado = imp.getNombre_usuario();
+                resultado = imp.getUsuario();
                 break;
             case 4:
                 resultado = (imp.getEstado().equals("1"))?"Completada":"Fallida";

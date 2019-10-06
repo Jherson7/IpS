@@ -1,15 +1,8 @@
 package vistas;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import org.com.Serial.puertos;
 import org.com.logica.controlador;
-import org.com.visor.VisualizerWindow;
 
 /**
  *
@@ -17,12 +10,13 @@ import org.com.visor.VisualizerWindow;
  */
 public class Archivo_reimpresion extends javax.swing.JInternalFrame {
 
-    private boolean archivo_cargado;
+    private int puntero;
     
-    public Archivo_reimpresion() {
+    public Archivo_reimpresion(int puntero) {
         initComponents();
        // txt_puerto.setText("COM11");
         txt_velocidad.setText("9600");
+        this.puntero=puntero;
         
         this.cmb_salida.setModel(controlador.getModeloPuertos());
         this.cmb_entrada.setModel(controlador.getModeloPuertos());
@@ -167,8 +161,8 @@ public class Archivo_reimpresion extends javax.swing.JInternalFrame {
 
                 JOptionPane.showMessageDialog(this, "Se cargaron correctamente los parametros para la impresion", "EXITO", 1);
                 controlador.listo = true;
-                //controlador.preparar_impresora();
-                controlador.mostrar_controlador_impresora();
+                
+                controlador.mostrar_controlador_re_impreson(this.puntero);
                 this.dispose();
 
             }
@@ -205,52 +199,7 @@ public class Archivo_reimpresion extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txt_velocidad;
     // End of variables declaration//GEN-END:variables
 
-    private void seleccionar_archivo() {
-        
-        JFileChooser jf = new JFileChooser("C:\\Users\\Jherson\\Documents\\UNIVERSIDAD\\2 SEM 2018\\EPS\\Softwares");
-        
-        jf.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        
-        jf.setFileFilter(null);
-        
-        jf.setAcceptAllFileFilterUsed(false);
-         
-        FileFilter filtro1 = new FileNameExtensionFilter("Archivos G", "g","gcode"); 
-
-        jf.setFileFilter(filtro1);
-  
-        int res = jf.showOpenDialog(this);
-        
-        if(res==JFileChooser.APPROVE_OPTION){
-            
-            VisualizerWindow vw = new VisualizerWindow();
-            //if (this.fileTextField.getText().length() > 1) {
-            vw.setGcodeFile(jf.getSelectedFile().toString());
-            //}
-            controlador.archivo = jf.getSelectedFile();
-        }
-    }
-
-    private void cargar_archivo() {
-         try {
-          String line="";
-          String contenido="";
-                 
-          FileReader fr = new FileReader(controlador.archivo);
-          BufferedReader br = 
-                new BufferedReader(fr);
-
-            while((line = br.readLine()) != null) {
-                contenido+=line+"\n";
-            }   
-            //System.out.println(contenido);
-            controlador.cargar_contenido_archivo(controlador.archivo.getName(),contenido);
-            archivo_cargado=true;
-            br.close();                                                     
-        } catch (IOException ex) {
-          System.out.println("problem accessing file"+controlador.archivo.getAbsolutePath());
-        }
-    }
+   
 
     private boolean guardar_velocidad() {
         try {
@@ -267,7 +216,7 @@ public class Archivo_reimpresion extends javax.swing.JInternalFrame {
         puertos entrada =(puertos)cmb_entrada.getSelectedItem();
         puertos salida = (puertos)cmb_salida.getSelectedItem();        
         
-      /*  if(entrada.getNombre() .equals(salida.getNombre())){
+      /*if(entrada.getNombre() .equals(salida.getNombre())){
              JOptionPane.showMessageDialog(this, "Debe seleccionar puerto distinto de S/E","ERROR",0);
              return false;
         }*/
@@ -276,16 +225,5 @@ public class Archivo_reimpresion extends javax.swing.JInternalFrame {
         controlador.setPuertoLectura(entrada.getPuerto());
         
         return true;
-        
-        /*if (txt_puerto.getText().isEmpty()) {
-            if (txt_puerto.getText().contains("COM")) {
-                controlador.puerto = txt_puerto.getText();
-                return true;
-            }
-            return false;
-        } else {
-
-            return true;
-        }*/
     }
 }

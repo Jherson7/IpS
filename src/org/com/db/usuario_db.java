@@ -61,7 +61,7 @@ public class usuario_db {
      
     public Integer modifica_usuario(usuario usu){
           try {
-            con.setPreparado(con.getConn().prepareStatement("update usuario set nombres=?,apellidos=?,password=?,frol=?,usuario=? where idusuario=?"));
+            con.setPreparado(con.getConn().prepareStatement("update usuario set nombres=?,apellidos=?,password=?,frol=?,usuario=? where id_usuario=?"));
             con.getPreparado().setString(1, usu.getNombre());
             con.getPreparado().setString(2, usu.getApellidos());
             con.getPreparado().setString(3,usu.getPassword());
@@ -80,7 +80,7 @@ public class usuario_db {
     
     public Integer eliminar_usuario(usuario usu){
           try {
-            con.setPreparado(con.getConn().prepareStatement("delete from usuario where idusuario=?"));
+            con.setPreparado(con.getConn().prepareStatement("delete from usuario where id_usuario=?"));
             con.getPreparado().setInt(1, usu.getIdUSUARIO());
             
             con.getPreparado().executeUpdate();

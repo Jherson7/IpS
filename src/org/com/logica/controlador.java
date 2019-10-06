@@ -9,6 +9,7 @@ import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.Properties;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import org.com.Serial.puerto;
 import org.com.Serial.puertos;
@@ -56,30 +57,25 @@ public class controlador {
     private static String[] comandos_a_excluir;
     public static Principal Principal;
     
-    public static boolean preparar_impresora(JProgressBar cemento) {
+    public static boolean preparar_impresora(JProgressBar cemento,int linea_puntero) {
         
         barra_cemento=cemento;
         
         try {
             coordenadas = contenido_archivo.split("\n");
-            nombre_archivo= archivo.getName();
+            nombre_archivo= (nombre_archivo.equals(""))?archivo.getName():nombre_archivo;
             
             cargar_comandos_a_excluir();
             limpiar_comandos();
             
-             // impresora = new last();
-             // impresora.initialize();
-
             escritura = new puerto(puerto_salida, velocidad);
-            //lectura = new puerto(puerto_entrada, velocidad,true);
+            lectura = new puerto(puerto_entrada, velocidad,true);
 
-            puntero = 0;
+            puntero = linea_puntero;
             
             impresora_db = new impresion_db();
             
             estado_impresion = false;
-            
-         
             
             return true;
         } catch (Exception e) {
@@ -89,6 +85,8 @@ public class controlador {
     }
     
     public static void  iniciar_impresion(JProgressBar barra) {
+        
+        impresora_db.insertar_archivo(usuario_actual.getUsuario(),nombre_archivo,contenido_archivo);
         
         proceso_impresion = true;
         
@@ -107,7 +105,7 @@ public class controlador {
                             
                             estado_impresion = true;
                             finalizar_impresion();
-                            this.stop();
+                            //this.stop();
                             
                         }
                             
@@ -119,20 +117,19 @@ public class controlador {
         };
         
         hilo_impresion.start();
-   
-        impresora_db.insertar_archivo(usuario_actual.getIdUSUARIO(),nombre_archivo,contenido_archivo);
-        
+
     }
     
-    public static void  detener_impresion(){
+    public static void detener_impresion() {
         try {
-            if(hilo_impresion.isAlive()){
+            if (hilo_impresion.isAlive()) {
                 hilo_impresion.suspend();
             }
-            
+
         } catch (Exception e) {
-            System.out.println("error al detener impresion"); 
-       }
+            System.out.println("error al detener impresion");
+            JOptionPane.showMessageDialog(null, "Error al detener la impresion, por favor finalice la impresion", "ERROR", 0);
+        }
     }
     
     public static void  reanudar_impresion(){
@@ -140,6 +137,7 @@ public class controlador {
            hilo_impresion.resume();
         } catch (Exception e) {
             System.out.println("Error al reanudar la impresion");
+            JOptionPane.showMessageDialog(null, "Error al reanudar la impresion, por favor finalice la impresion","ERROR",0);
         }
     }
     
@@ -147,6 +145,7 @@ public class controlador {
        
         try {
             System.out.println("Linea: {"+linea+"}, comando:{"+comando+"}");
+            impresora_db.modificar_estado(estado_impresion,puntero);
             escritura.escribir_en_serial(comando); 
         } catch (Exception e) {
             estado_impresion=false;
@@ -154,8 +153,18 @@ public class controlador {
         }
    }
     
+    /**
+     * Metodo para imprimir comandos indivualdes desde la 
+     * segunda tabpane de impresion
+     * @param comando 
+     */
     public static void  imprimir_comando(String comando){
-           escritura.escribir_en_serial(comando);
+        try {
+            escritura.escribir_en_serial(comando);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al escribir en puerto serial! se ha cancelado la impresion","ERROR",0);
+            finalizar_impresion();
+        }
     }
 
     public static void  cancelar_impresion() {
@@ -269,7 +278,7 @@ public class controlador {
         int p=0;
         
         for(String a : coordenadas){
-            if(!(a.startsWith("(")||a.isEmpty()||verificar_comandos(a))){
+            if(!(a.startsWith("(")||a.startsWith(";")||a.isEmpty()||verificar_comandos(a))){
                 coordenadas2[p++]=a;
             }
         }
@@ -285,16 +294,28 @@ public class controlador {
         try {
             archivo=null;
             contenido_archivo="";
-           
+            coordenadas = null;
             listo=false;
             proceso_impresion=false;
             
-            escritura.close();
-            //lectura.close();
+            
             
             impresora_db.modificar_estado(estado_impresion,puntero);
             
-            hilo_impresion.stop();
+            try {
+                System.out.println(hilo_impresion.getState());
+                hilo_impresion.stop();
+            } catch (Exception e) {
+                System.out.println("Error al detener hilo de impresion");
+            }
+            
+            
+            try {
+                lectura.close();
+                escritura.close();
+            } catch (Exception e) {
+                System.out.println("Error al cerrar los puertos: "+e.getCause());
+            }
             
             if(!estado_impresion)
                 vista_impresora.terminar_con_error();
@@ -337,7 +358,7 @@ public class controlador {
         p++;
         
         
-        if ((p % 15)==0) {
+        if ((p % 40)==0) {
             vista_impresora.eliminarDatos();
         }
         
@@ -346,7 +367,7 @@ public class controlador {
             mot = mot.replace("{", "").replace("}", "").replace("\"", "").trim();
 
             String[] datos_motor = mot.split(":");
-            int valor = Integer.valueOf(datos_motor[1].trim());
+            int valor = (int)Double.parseDouble(datos_motor[1].trim());
             
             controlador.graficarMotores(valor, datos_motor[0], controlador.p);
         }
@@ -358,6 +379,10 @@ public class controlador {
 
     public static void  set_usuario(usuario usu) {
         usuario_actual = usu;
+    }
+    
+    public static usuario  get_usuario() {
+       return usuario_actual ;
     }
 
     private static void cargar_comandos_a_excluir(){
@@ -379,7 +404,7 @@ public class controlador {
 
     private static boolean verificar_comandos(String a) {
          for(String comando: comandos_a_excluir ){
-              if(a.equalsIgnoreCase(comando)) 
+              if(a.equalsIgnoreCase(comando) || a.contains(comando)) 
                   return true;
          }
          return false;    
@@ -390,12 +415,16 @@ public class controlador {
        controlador.nombre_archivo= name;
     }
 
-    public static void reimprimir() {
-        Principal.mostrarVentanaReimpresion();
+    public static void reimprimir(int puntero) {
+        Principal.mostrarVentanaReimpresion(puntero);
    }
 
     public static void mostrar_controlador_impresora() {
        Principal.mostrar_controlador_imp();
+    }
+    
+     public static void mostrar_controlador_re_impreson(int puntero) {
+       Principal.mostrar_controlador_re_impresion(puntero);
     }
     
 }

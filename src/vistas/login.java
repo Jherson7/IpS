@@ -18,12 +18,12 @@ import org.com.logica.controlador;
  */
 public class login extends javax.swing.JFrame {
 
-    //ImageIcon img= new ImageIcon("src/org/com/pictures/aparcamiento.png");
+    ImageIcon img= new ImageIcon("src/org/com/pictures/impresora.png");
     
     public login() {
        // this.setUndecorated(true);
         initComponents();
-        //this.setIconImage(img.getImage());
+        this.setIconImage(img.getImage());
         setLocationRelativeTo(null);
     }
 
@@ -142,13 +142,13 @@ public class login extends javax.swing.JFrame {
             String user = txt_usuario.getText();
             String pass = txt_password.getText();
             usuario_db usudb = new usuario_db();
-           // parqueo_db par = new parqueo_db();
             usuario usu = usudb.login(user, pass);
             
             if (usu != null) {
+                controlador.set_usuario(usu);
                 Principal pr = new Principal();
                 pr.setVisible(true);
-                controlador.set_usuario(usu);
+               
                 this.dispose();
             }else{
                  JOptionPane.showMessageDialog(null, "Usuario o contrasenia erroneos", "LOGIN", 0);

@@ -12,27 +12,34 @@ package org.com.bens;
 public class impresion {
     
     int id;
-    int usuario;
-
+    String usuario;
     String nombre_archivo;
     String contenido;
     String fecha;
     int linea;
     String estado;
-    String nombre_usuario;
+    
 
     public impresion() {
     }
 
-    public impresion(int id, int usuario, String nombre_archivo, String contenido, String fecha, int linea, String estado, String nombre_usuario) {
+    public impresion(int id, String usuario, String nombre_archivo, String contenido, String fecha, int linea, int estado) {
         this.id = id;
-        this.usuario = usuario;
         this.nombre_archivo = nombre_archivo;
         this.contenido = contenido;
         this.fecha = fecha;
         this.linea = linea;
-        this.estado = estado;
-        this.nombre_usuario = nombre_usuario;
+        this.estado = ""+estado;
+        this.usuario= usuario;
+        
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
 
@@ -79,14 +86,6 @@ public class impresion {
         this.estado = estado;
     }
 
-    public int getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(int usuario) {
-        this.usuario = usuario;
-    }
-
     public String getContenido() {
         return contenido;
     }
@@ -95,16 +94,4 @@ public class impresion {
         this.contenido = contenido;
     }
 
-    public String getNombre_usuario() {
-        return nombre_usuario;
-    }
-
-    public void setNombre_usuario(String nombre_usuario) {
-        this.nombre_usuario = nombre_usuario;
-    }
-    
-    
-    
-    
-    
-}
+ }

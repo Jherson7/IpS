@@ -1,5 +1,6 @@
 package vistas;
 
+import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import org.com.logica.controlador;
@@ -18,6 +19,11 @@ public class Principal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setExtendedState(MAXIMIZED_BOTH);
         controlador.Principal=this;
+        
+        ImageIcon img= new ImageIcon("src/org/com/pictures/impresora.png");
+        this.setIconImage(img.getImage());
+        
+        validar_acceso();
     }
 
     public void mostrarVentanasInternas(JInternalFrame frame,String nombre){
@@ -46,8 +52,8 @@ public class Principal extends javax.swing.JFrame {
         frame.moveToFront();
     }
     
-    public void mostrarVentanaReimpresion(){
-        mostrarVentanasInternas(new Archivo_reimpresion(), "Reimpresion");
+    public void mostrarVentanaReimpresion(int puntero){
+        mostrarVentanasInternas(new Archivo_reimpresion(puntero), "Reimpresion");
     }
     
     /**
@@ -68,9 +74,10 @@ public class Principal extends javax.swing.JFrame {
         menu_usuario = new javax.swing.JMenu();
         menu_conf = new javax.swing.JMenuItem();
         menu_controller = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        menu_impresiones = new javax.swing.JMenuItem();
         menu_administrador = new javax.swing.JMenu();
         menu_user = new javax.swing.JMenuItem();
-        menu_impresiones = new javax.swing.JMenuItem();
         menu_about = new javax.swing.JMenu();
         menu_acerca = new javax.swing.JMenuItem();
 
@@ -86,9 +93,10 @@ public class Principal extends javax.swing.JFrame {
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 339, Short.MAX_VALUE)
+            .addGap(0, 334, Short.MAX_VALUE)
         );
 
+        menu_archivo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/com/pictures/file.png"))); // NOI18N
         menu_archivo.setText("Archivo");
         menu_archivo.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
 
@@ -114,9 +122,11 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(menu_archivo);
 
+        menu_usuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/com/pictures/usuario.png"))); // NOI18N
         menu_usuario.setText("Usuario");
         menu_usuario.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
 
+        menu_conf.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         menu_conf.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 14)); // NOI18N
         menu_conf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/com/pictures/controles.png"))); // NOI18N
         menu_conf.setText("Configuracion");
@@ -127,6 +137,7 @@ public class Principal extends javax.swing.JFrame {
         });
         menu_usuario.add(menu_conf);
 
+        menu_controller.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
         menu_controller.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 14)); // NOI18N
         menu_controller.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/com/pictures/impresora.png"))); // NOI18N
         menu_controller.setText("Controlador");
@@ -136,12 +147,26 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menu_usuario.add(menu_controller);
+        menu_usuario.add(jSeparator1);
+
+        menu_impresiones.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        menu_impresiones.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 14)); // NOI18N
+        menu_impresiones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/com/pictures/reportar.png"))); // NOI18N
+        menu_impresiones.setText("IMPRESIONES");
+        menu_impresiones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_impresionesActionPerformed(evt);
+            }
+        });
+        menu_usuario.add(menu_impresiones);
 
         jMenuBar1.add(menu_usuario);
 
+        menu_administrador.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/com/pictures/archivo.png"))); // NOI18N
         menu_administrador.setText("Administrador");
         menu_administrador.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
 
+        menu_user.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         menu_user.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 14)); // NOI18N
         menu_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/com/pictures/equipo.png"))); // NOI18N
         menu_user.setText("USUARIOS");
@@ -152,18 +177,9 @@ public class Principal extends javax.swing.JFrame {
         });
         menu_administrador.add(menu_user);
 
-        menu_impresiones.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 14)); // NOI18N
-        menu_impresiones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/com/pictures/reportar.png"))); // NOI18N
-        menu_impresiones.setText("IMPRESIONES");
-        menu_impresiones.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menu_impresionesActionPerformed(evt);
-            }
-        });
-        menu_administrador.add(menu_impresiones);
-
         jMenuBar1.add(menu_administrador);
 
+        menu_about.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/com/pictures/estudiante.png"))); // NOI18N
         menu_about.setText("About");
         menu_about.setFont(new java.awt.Font("MS Reference Sans Serif", 0, 14)); // NOI18N
 
@@ -272,6 +288,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenu menu_about;
     private javax.swing.JMenuItem menu_acerca;
     private javax.swing.JMenu menu_administrador;
@@ -294,5 +311,23 @@ public class Principal extends javax.swing.JFrame {
         else
             JOptionPane.showMessageDialog(this, "Aun no se han cargado las configuraciones iniciales!","ERROR",0);
        
+    }
+
+    public void mostrar_controlador_re_impresion(int puntero) {
+        if(controlador.listo){
+            impresion imp = new impresion(puntero);
+            controlador.setImpresora(imp) ;
+            mostrarVentanasInternasSinBotones(imp, "CONTROLADOR DE IMPRESORA");
+        }
+           
+        else
+            JOptionPane.showMessageDialog(this, "Aun no se han cargado las configuraciones iniciales!","ERROR",0);
+       
+    }
+    
+    private void validar_acceso() {
+        if(controlador.get_usuario().getfRol() != 1){
+            this.menu_administrador.setVisible(false);
+        }
     }
 }

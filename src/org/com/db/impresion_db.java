@@ -2,6 +2,7 @@ package org.com.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import org.com.bens.impresion;
@@ -23,14 +24,34 @@ public class impresion_db {
     public List<impresion> retornarLista(){
         List<impresion> lista = new LinkedList<>();
         try {
-            con.setPreparado(con.getConn().prepareStatement("select imp.*, u.nombres from impresion imp " +
-                                        "inner join usuario u on imp.id_usuario = u.id_usuario"));
+            con.setPreparado(con.getConn().prepareStatement("select * from impresion"));
             res=con.getPreparado().executeQuery();
 
             while(res.next()){
                 
-                impresion imp = new impresion(res.getInt(1), res.getInt(2), res.getString(3),
-                        res.getString(4), res.getString(5), res.getInt(6), res.getString(7), res.getString(8));
+                impresion imp = new impresion(res.getInt(1), res.getString(2), res.getString(3),
+                        res.getString(4), res.getString(5), res.getInt(6),res.getInt(7));
+                
+                lista.add(imp);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener la lista de IMPRESIONES: "+ex.getLocalizedMessage());
+        }
+        return lista;
+    }
+    
+    public List<impresion> retornarListaConFecha(Date inicio, Date fin){
+        List<impresion> lista = new LinkedList<>();
+        try {
+            con.setPreparado(con.getConn().prepareStatement("select * from impresion where fecha between "
+                    + "'" + new java.sql.Date(inicio.getTime()) + "' and '" + new java.sql.Date(fin.getTime())
+                    + "'"));
+            res=con.getPreparado().executeQuery();
+
+            while(res.next()){
+                
+                impresion imp = new impresion(res.getInt(1), res.getString(2), res.getString(3),
+                        res.getString(4), res.getString(5), res.getInt(6),res.getInt(7));
                 
                 lista.add(imp);
             }
@@ -40,14 +61,14 @@ public class impresion_db {
         return lista;
     }
 
-    public void insertar_archivo(int id_usuario,String nombre_archivo,String contenido_archivo) {
+    public void insertar_archivo(String usuario,String nombre_archivo,String contenido_archivo) {
         try {
             con.setPreparado(con.getConn().prepareStatement("insert into impresion "
-                    + "(id_usuario, nombre_archivo, contenido_archivo,fecha)"
+                    + "(usuario, nombre_archivo, contenido_archivo,fecha)"
                     + " values(?,?,?,current_date())"));
             
             
-            con.getPreparado().setInt(1, id_usuario);
+            con.getPreparado().setString(1, usuario);
             con.getPreparado().setString(2, nombre_archivo);
             con.getPreparado().setString(3, contenido_archivo);
             
@@ -63,7 +84,7 @@ public class impresion_db {
         
         try {
             con.setPreparado(con.getConn().prepareStatement("update impresion "
-                    + "set estado = ? , linea = ? where id_impresion = (select max(id_impresion) from impresion)"));
+                    + "set estado = ? , linea = ? where id_impresion = last_insert_id()"));
             
             int estado = 0;
             if(estado_impresion)
